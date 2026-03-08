@@ -1,0 +1,18 @@
+.ag-header-row-column{
+    background-color: #2469bc !important;
+    color: #fff !important;
+} 
+
+.ag-theme-balham{
+    font-size:14px;
+}
+
+.ag-cell{
+    display:flex;
+    align-items: center;
+    color:#333;
+}
+
+.ag-header-icon{
+    color: #fff;
+}

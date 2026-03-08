@@ -1,0 +1,61 @@
+{
+  "hash": "a900e32b",
+  "configHash": "a6547b0c",
+  "lockfileHash": "ff9cd71b",
+  "browserHash": "d136ed82",
+  "optimized": {
+    "@angular/common/http": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
+      "file": "@angular_common_http.js",
+      "fileHash": "5e0acaa1",
+      "needsInterop": false
+    },
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "cc79d594",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "a98c0008",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "611d5bc1",
+      "needsInterop": false
+    },
+    "ag-grid-angular": {
+      "src": "../../../../../../node_modules/ag-grid-angular/fesm2022/ag-grid-angular.mjs",
+      "file": "ag-grid-angular.js",
+      "fileHash": "e2175525",
+      "needsInterop": false
+    },
+    "ag-grid-community": {
+      "src": "../../../../../../node_modules/ag-grid-community/dist/package/main.esm.mjs",
+      "file": "ag-grid-community.js",
+      "fileHash": "e1475c42",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-LS7USDBU": {
+      "file": "chunk-LS7USDBU.js"
+    },
+    "chunk-HJNAFWAK": {
+      "file": "chunk-HJNAFWAK.js"
+    },
+    "chunk-NYQWCN5R": {
+      "file": "chunk-NYQWCN5R.js"
+    },
+    "chunk-XSTGVCSX": {
+      "file": "chunk-XSTGVCSX.js"
+    },
+    "chunk-GOMI4DH3": {
+      "file": "chunk-GOMI4DH3.js"
+    }
+  }
+}

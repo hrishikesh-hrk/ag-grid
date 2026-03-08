@@ -1,0 +1,19 @@
+<h2 class="mb-4">Request Details Table</h2>
+<!-- app.component.html -->
+<div class="ag-theme-balham" style="height: 500px; width: 100%;">
+  <ag-grid-angular
+    [rowData]="gridData"
+    [columnDefs]="columnDefs"
+    [pagination]="true"
+    [gridOptions]="gridOptions"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [rowSelection]="'multiple'"
+    [domLayout]="domLayout"
+    [suppressRowHoverHighlight]="true"
+    >
+  </ag-grid-angular>
+</div>
+
+
+<router-outlet />
