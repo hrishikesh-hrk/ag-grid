@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
 import { PaginationNumberFormatterParams } from 'ag-grid-community';
@@ -26,14 +26,12 @@ export class App implements OnInit {
   paginationPageSizeSelector: any;
   paginationNumberFormatter: any;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.initializeAGGrid();
     this.getFileList();
   }
-
-
 
   initializeAGGrid() {
     this.gridOptions = {
@@ -61,176 +59,85 @@ export class App implements OnInit {
   getFileList() {
     this.appService.getData().subscribe({
       next: (res: any) => {
+        this.columnDefs = [
+          {
+            field: 'Request_ID',
+            headerName: 'Request Id',
+            filter: 'agNumberColumnFilter',
+            width: 120
+          },
+          {
+            field: 'Requester_Name',
+            headerName: 'Requester Name',
+            filter: 'agTextColumnFilter',
+            minWidth: 150,
+            flex: 1
+          },
+          {
+            field: 'chosen_group',
+            headerName: 'User Group',
+            filter: 'agTextColumnFilter',
+            minWidth: 250,
+            wrapText: true,
+            autoHeight: true,
+            flex: 2
+          },
+          {
+            field: 'approver_name',
+            headerName: 'Approver Name',
+            filter: 'agTextColumnFilter',
+            minWidth: 150,
+            flex: 1
+          },
+          {
+            field: 'request_status',
+            headerName: 'Request Status',
+            filter: 'agTextColumnFilter',
+            minWidth: 100,
+            cellStyle: (params: any) => {
+              if (params.value === 'APPROVED') return { color: 'green', fontWeight: '600' };
+              if (params.value === 'REJECTED') return { color: 'red', fontWeight: '600' };
+              return { color: '#444' };
+            }
+          },
+          {
+            field: 'accessProvided',
+            headerName: 'Access Provided',
+            filter: 'agTextColumnFilter',
+            minWidth: 120,
+            valueGetter: (p: any) =>
+              p.data?.request_status === 'APPROVED' ? 'Yes' : 'No',
+          },
+          {
+            field: 'updated_timestamp',
+            headerName: 'Updated Date',
+            filter: 'agDateColumnFilter',
+            minWidth: 180,
+            valueFormatter: (params: any) => {
+              if (!params.value) return '';
+              const date = new Date(params.value);
+              return date.toLocaleDateString('en-GB');
+            }
+          },
+          {
+            headerName: '',
+            field: 'action',
+            width: 80,
+            sortable: false,
+            filter: false,
+            cellRenderer: () => `
+      <i class="bi bi-box-arrow-up-right" style="cursor:pointer; font-size:18px;" aria-label="Open Request"></i>
+    `,
+            tooltipField: 'Open Request'
+          }
+        ];
+
         this.gridData = res;
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.log("Error :", err)
       }
     })
-
-    this.columnDefs = [
-      {
-        field: 'requestId',
-        headerName: 'Request Id',
-        filter: 'agNumberColumnFilter',
-        width: 120
-      },
-      {
-        field: 'userId',
-        headerName: 'User Id',
-        filter: 'agTextColumnFilter',
-        minWidth: 150,
-        flex: 1
-      },
-      {
-        field: 'userGroup',
-        headerName: 'User Group',
-        filter: 'agTextColumnFilter',
-        minWidth: 250,
-        wrapText: true,
-        autoHeight: true
-      },
-      {
-        field: 'approverName',
-        headerName: 'Approver Name',
-        filter: 'agTextColumnFilter',
-        minWidth: 150
-      },
-      {
-        field: 'requestStatus',
-        headerName: 'Request Status',
-        filter: 'agTextColumnFilter',
-        minWidth: 100,
-        cellStyle: (params: any) => {
-          if (params.value === 'Approved') return { color: 'green', fontWeight: '600' };
-          if (params.value === 'Rejected') return { color: 'red', fontWeight: '600' };
-          return { color: '#444' };
-        }
-      },
-      {
-        field: 'accessProvided',
-        headerName: 'Access Provided',
-        filter: 'agTextColumnFilter',
-        minWidth: 100
-      },
-      {
-        field: 'updatedDate',
-        headerName: 'Updated Date',
-        filter: 'agDateColumnFilter',
-        minWidth: 180,
-        valueFormatter: (params: any) => {
-          if (!params.value) return '';
-          const date = new Date(params.value);
-          return date.toLocaleDateString('en-GB');
-        }
-      },
-      {
-        headerName: '',
-        field: 'action',
-        width: 80,
-        sortable: false,
-        filter: false,
-        cellRenderer: () => `
-      <i class="bi bi-box-arrow-up-right" style="cursor:pointer; font-size:18px;" aria-label="Open Request"></i>
-    `,
-        tooltipField: 'Open Request'
-      }
-    ];
-
-
-    this.gridData = [
-      {
-        requestId: 1,
-        userId: 'Current User',
-        userGroup: 'Enterprise-Admin-Finance-FMC',
-        approverName: 'User 1',
-        requestStatus: 'Approved',
-        accessProvided: 'Yes',
-        updatedDate: '2026-05-17'
-      },
-      {
-        requestId: 2,
-        userId: 'Current User',
-        userGroup: 'Read-Planning-FMC',
-        approverName: 'User 2',
-        requestStatus: 'Pending',
-        accessProvided: '-',
-        updatedDate: '2026-05-12'
-      },
-      {
-        requestId: 3,
-        userId: 'Current User',
-        userGroup: 'Enterprise-Admin-HR-FMC',
-        approverName: 'User 3',
-        requestStatus: 'Rejected',
-        accessProvided: '-',
-        updatedDate: '2026-04-28'
-      },
-      {
-        requestId: 4,
-        userId: 'Current User',
-        userGroup: 'Reporting-Admin-FMC',
-        approverName: 'User 4',
-        requestStatus: 'Approved',
-        accessProvided: 'Yes',
-        updatedDate: '2026-05-05'
-      },
-      {
-        requestId: 5,
-        userId: 'Current User',
-        userGroup: 'Read-Analytics-FMC',
-        approverName: 'User 5',
-        requestStatus: 'Pending',
-        accessProvided: '-',
-        updatedDate: '2026-05-10'
-      },
-      {
-        requestId: 6,
-        userId: 'Current User',
-        userGroup: 'Enterprise-Admin-Security-FMC',
-        approverName: 'User 6',
-        requestStatus: 'Approved',
-        accessProvided: 'Yes',
-        updatedDate: '2026-04-15'
-      },
-      {
-        requestId: 7,
-        userId: 'Current User',
-        userGroup: 'Read-Compliance-FMC',
-        approverName: 'User 7',
-        requestStatus: 'Rejected',
-        accessProvided: '-',
-        updatedDate: '2026-03-30'
-      },
-      {
-        requestId: 8,
-        userId: 'Current User',
-        userGroup: 'Enterprise-Admin-Operations-FMC',
-        approverName: 'User 8',
-        requestStatus: 'Approved',
-        accessProvided: 'Yes',
-        updatedDate: '2026-05-18'
-      },
-      {
-        requestId: 9,
-        userId: 'Current User',
-        userGroup: 'Read-Planning-FMC',
-        approverName: 'User 9',
-        requestStatus: 'Pending',
-        accessProvided: '-',
-        updatedDate: '2026-05-08'
-      },
-      {
-        requestId: 10,
-        userId: 'Current User',
-        userGroup: 'Enterprise-Admin-Finance-FMC',
-        approverName: 'User 10',
-        requestStatus: 'Approved',
-        accessProvided: 'Yes',
-        updatedDate: '2026-05-16'
-      }
-    ];
   }
-
-
 }

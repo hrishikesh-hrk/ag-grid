@@ -11,7 +11,7 @@ export class AppService {
   getData(){
     console.log("Called");
     // return {"hello":"world"};
-    return this.http.get('');
+    return this.http.get('http://localhost:5000/requestTable');
   }
 
 }
